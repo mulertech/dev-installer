@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+// PHP version check
+$requiredVersion = '8.2.0';
+if (version_compare(PHP_VERSION, $requiredVersion, '<')) {
+    echo "Error: This installer requires PHP $requiredVersion or higher." . PHP_EOL;
+    echo "Current PHP version: " . PHP_VERSION . PHP_EOL;
+    echo "Would you like to install a different version of PHP?" . PHP_EOL;
+    echo "Enter version (e.g., 8.4) or leave blank to skip: " . PHP_EOL;
+    $input = trim(fgets(STDIN));
+
+    if (empty($input)) {
+        echo "Skipping PHP installation." . PHP_EOL;
+        exit(1);
+    }
+    $version = escapeshellarg($input);
+
+    // Add php repository if not already added
+    echo "Adding PHP repository..." . PHP_EOL;
+    system("sudo add-apt-repository ppa:ondrej/php -y", $result);
+    if ($result !== 0) {
+        echo "Error: Failed to add PHP repository." . PHP_EOL;
+        exit(1);
+    }
+
+    // Install the specified PHP version
+    system("sudo apt-get install php$version", $result);
+    if ($result !== 0) {
+        echo "Error: Failed to install PHP $version." . PHP_EOL;
+        exit(1);
+    }
+    echo "PHP $version installed successfully." . PHP_EOL;
+
+    // Configure the operating system to use the specified PHP version
+    echo "Configuring the operating system to use PHP $version..." . PHP_EOL;
+    system("sudo update-alternatives --set php /usr/bin/php$version", $result);
+    if ($result !== 0) {
+        echo "Error: Failed to configure PHP $version." . PHP_EOL;
+        exit(1);
+    }
+    echo "PHP $version configured successfully." . PHP_EOL;
+}
+
+// Check if mulertech/mterm is installed
+$scriptDir = dirname(__FILE__);
+
+
+require_once "./vendor/composer/InstalledVersions.php";
+use Composer\InstalledVersions;
+
+if (!InstalledVersions::isInstalled('mulertech/mterm')) {
+    echo "Package mulertech/mterm not found. Installing it now..." . PHP_EOL;
+    
+    // Check if composer.phar exists in the same directory
+    $composerPhar = "$scriptDir/composer.phar";
+
+    // Install mulertech/mterm with composer.phar
+    echo "Installing mulertech/mterm..." . PHP_EOL;
+    system("php $scriptDir/composer.phar update --no-interaction", $result);
+    
+    if ($result !== 0) {
+        echo "Failed to install mulertech/mterm. Aborting." . PHP_EOL;
+        exit(1);
+    }
+    
+    echo "Package mulertech/mterm installed successfully." . PHP_EOL;
+}
+
+require_once $scriptDir . '/vendor/autoload.php';
+use Mulertech\DevInstaller\DevInstaller;
+
+DevInstaller::start();

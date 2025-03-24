@@ -1,0 +1,24 @@
+{
+  "name": "mulertech/dev-installer",
+  "description": "Interactive development environment installer for Linux/Ubuntu systems.",
+  "type": "project",
+  "keywords": ["installer", "development", "environment", "ubuntu", "debian", "php", "tools"],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sébastien Muler",
+      "email": "sebastien.muler@mulertech.net"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "mulertech/mterm": "^1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mulertech\\DevInstaller\\": "./src"
+    }
+  },
+  "bin": ["dev-installer"]
+}
