@@ -45,11 +45,12 @@ if (version_compare(PHP_VERSION, $requiredVersion, '<')) {
 // Check if mulertech/mterm is installed
 $scriptDir = dirname(__FILE__);
 
+// Check if mulertech/mterm is installed using composer.phar
+$composerPhar = "$scriptDir/composer.phar";
+system("php $composerPhar show mulertech/mterm 2>/dev/null", $packageExists);
 
-require_once "./vendor/composer/InstalledVersions.php";
-use Composer\InstalledVersions;
-
-if (!InstalledVersions::isInstalled('mulertech/mterm')) {
+// If return code is not 0, package is not installed
+if ($packageExists !== 0) {
     echo "Package mulertech/mterm not found. Installing it now..." . PHP_EOL;
     
     // Check if composer.phar exists in the same directory
