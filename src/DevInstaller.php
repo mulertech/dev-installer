@@ -220,7 +220,7 @@ class DevInstaller
         $this->executeCommand("git config --global core.autocrlf input");
 
         $email = $this->terminal->read(
-            'What is your email address?' . PHP_EOL . 'Leave empty to skip email git configuration: '
+            'What is your email address?' . PHP_EOL . 'Leave empty to skip email git configuration (then press enter): '
         );
 
         if ($email !== '') {
@@ -228,7 +228,7 @@ class DevInstaller
         }
 
         $username = $this->terminal->read(
-            'What is your git user.name?' . PHP_EOL . 'Leave empty to skip user.name git configuration: '
+            'What is your git user.name?' . PHP_EOL . 'Leave empty to skip user.name git configuration (then press enter): '
         );
 
         if ($username !== '') {
@@ -259,7 +259,7 @@ class DevInstaller
     private function installPhpModules(): void
     {
         if (!isset($this->phpVersion)) {
-            $phpVersion = $this->terminal->read("Enter the PHP version for which you want to install modules: ");
+            $phpVersion = $this->terminal->read("Enter the PHP version for which you want to install modules (e.g., 'php8.3'): ");
             if (!str_starts_with('php', $phpVersion)) {
                 $phpVersion = "php$phpVersion";
             }
