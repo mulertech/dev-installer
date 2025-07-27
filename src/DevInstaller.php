@@ -474,7 +474,7 @@ class DevInstaller
     {
         $this->terminal->writeLine("Installing NVM...", "blue");
         $home = getenv('HOME');
-        $nvmUrl = 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh';
+        $nvmUrl = 'https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh';
         $installPath = $home . DIRECTORY_SEPARATOR . 'install.sh';
         copy($nvmUrl, $installPath);
         $this->executeCommand("chmod +x $installPath");
